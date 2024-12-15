@@ -19,8 +19,8 @@ A web-based concert management system built with Flask that allows users to book
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/concert-management.git
-cd concert-management
+git clone https://github.com/Sara-1281/secure-concert-app.git
+cd secure-concert-app
 ```
 
 2. Create a virtual environment and activate it:
