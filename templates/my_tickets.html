@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">My Tickets</h2>
+    {% if tickets %}
+    <div class="row">
+        {% for ticket in tickets %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ ticket.concert.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ ticket.concert.artist }}</h6>
+                    <p class="card-text">
+                        <strong>Date:</strong> {{ ticket.concert.date.strftime('%Y-%m-%d %H:%M') }}<br>
+                        <strong>Venue:</strong> {{ ticket.concert.venue }}<br>
+                        <strong>Quantity:</strong> {{ ticket.quantity }}<br>
+                        <strong>Total Price:</strong> ${{ "%.2f"|format(ticket.concert.price * ticket.quantity) }}<br>
+                        <strong>Purchase Date:</strong> {{ ticket.purchase_date.strftime('%Y-%m-%d %H:%M') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        You haven't booked any tickets yet. <a href="{{ url_for('index') }}">Browse concerts</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

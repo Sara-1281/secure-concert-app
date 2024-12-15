@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Admin Dashboard</h2>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Add New Concert</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_concert') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">Concert Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="artist" class="form-label">Artist</label>
+                            <input type="text" class="form-control" id="artist" name="artist" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="datetime-local" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="venue" class="form-label">Venue</label>
+                            <input type="text" class="form-control" id="venue" name="venue" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="available_tickets" class="form-label">Available Tickets</label>
+                            <input type="number" class="form-control" id="available_tickets" name="available_tickets" value="100" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Concert</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h4>Concert List</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Artist</th>
+                                <th>Date</th>
+                                <th>Venue</th>
+                                <th>Price</th>
+                                <th>Available Tickets</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for concert in concerts %}
+                            <tr>
+                                <td>{{ concert.title }}</td>
+                                <td>{{ concert.artist }}</td>
+                                <td>{{ concert.date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ concert.venue }}</td>
+                                <td>${{ "%.2f"|format(concert.price) }}</td>
+                                <td>{{ concert.available_tickets }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editModal{{ concert.id }}">Edit</button>
+                                    <form method="POST" action="{{ url_for('delete_concert', id=concert.id) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this concert?')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                            <!-- Edit Modal -->
+                            <div class="modal fade" id="editModal{{ concert.id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Concert</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="{{ url_for('edit_concert', id=concert.id) }}">
+                                                <div class="mb-3">
+                                                    <label for="title{{ concert.id }}" class="form-label">Concert Title</label>
+                                                    <input type="text" class="form-control" id="title{{ concert.id }}" name="title" value="{{ concert.title }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="artist{{ concert.id }}" class="form-label">Artist</label>
+                                                    <input type="text" class="form-control" id="artist{{ concert.id }}" name="artist" value="{{ concert.artist }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="date{{ concert.id }}" class="form-label">Date</label>
+                                                    <input type="datetime-local" class="form-control" id="date{{ concert.id }}" name="date" value="{{ concert.date.strftime('%Y-%m-%dT%H:%M') }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="venue{{ concert.id }}" class="form-label">Venue</label>
+                                                    <input type="text" class="form-control" id="venue{{ concert.id }}" name="venue" value="{{ concert.venue }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="price{{ concert.id }}" class="form-label">Price</label>
+                                                    <input type="number" step="0.01" class="form-control" id="price{{ concert.id }}" name="price" value="{{ concert.price }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="available_tickets{{ concert.id }}" class="form-label">Available Tickets</label>
+                                                    <input type="number" class="form-control" id="available_tickets{{ concert.id }}" name="available_tickets" value="{{ concert.available_tickets }}" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

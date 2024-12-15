@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Create Admin User</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    This page is only available once to create the initial admin user.
+                </div>
+                <form method="POST">
+                    <p class="text-center">Click the button below to create the admin user with these credentials:</p>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item">Username: admin</li>
+                        <li class="list-group-item">Password: admin123</li>
+                        <li class="list-group-item">Email: admin@example.com</li>
+                    </ul>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Create Admin User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
